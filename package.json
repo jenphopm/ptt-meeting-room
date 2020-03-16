@@ -1,0 +1,22 @@
+{
+  "name": "ptt-meeting-room",
+  "version": "1.0.0",
+  "description": "\"# ptt-meeting-room\"",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jenphopm/ptt-meeting-room.git"
+  },
+  "author": "jenphopm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jenphopm/ptt-meeting-room/issues"
+  },
+  "homepage": "https://github.com/jenphopm/ptt-meeting-room#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
