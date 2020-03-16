@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 app.post('/webhook', (req, res) => {
     var text = req.body.events[0].message.text
     var sender = req.body.events[0].source.userId
-    var group = req.body.events[0].source.groupId
+    var group = req.body.events[0].groupId
     var replyToken = req.body.events[0].replyToken
     console.log(text, sender, group, replyToken)
     console.log(typeof sender, typeof text)
