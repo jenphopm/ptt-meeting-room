@@ -1,7 +1,9 @@
-var express = require('express')
-var bodyParser = require('body-parser')
-var request = require('request')
-var app = express()
+const express = require('express')
+const bodyParser = require('body-parser')
+const request = require('request')
+const app = express()
+const axios = require('axios');
+const moment = require('moment');
 
 app.use(bodyParser.json())
 
@@ -9,28 +11,57 @@ app.set('port', (process.env.PORT || 4000))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+// "User Jane Ue50b2d654ce343c18bd995156b863dee"
+// "Group PTT Meeting Room C02fb59d54276c128aa3d93acab7708d9"
+
 app.post('/webhook', (req, res) => {
-    var text = req.body.events[0].message.text
-    var sender = req.body.events[0].source.userId
-    var room = req.body.events[0].source.roomId
-    var replyToken = req.body.events[0].replyToken
-    // console.log(text, sender, room, replyToken)
+    let text = req.body.events[0].message.text
+    let sender = req.body.events[0].source.userId
+    let group = req.body.events[0].source.groupId
+    let replyToken = req.body.events[0].replyToken
+    // console.log(text, sender, group, replyToken)
     // console.log(typeof sender, typeof text)
-    console.log("req.body.events[0]", req.body.events[0])
+    // console.log("req.body.events[0]", req.body.events[0])
     // console.log(req.body.events[0])
-    if (text === 'สวัสดี' || text === 'Hello' || text === 'hello') {
-        sendText(sender, text)
-    }
+    // if (text === 'สวัสดี' || text === 'Hello' || text === 'hello') {
+    //     sendMessage(sender, text)
+    // }
     res.sendStatus(200)
 })
 
-function sendText(sender, text) {
+app.get('/sendRoomNumber', (req, res) => {
+    let sender = "C02fb59d54276c128aa3d93acab7708d9"
+    let today = moment().format('DD-MMM-YY');
+    // console.log("today", today)
+    // let message = "test"
+    axios.get('https://script.google.com/macros/s/AKfycbz0XswpatxtNryRGk6Y-AVKfv_T3TE1AuMbyzEbQNCPvSi2AQc/exec', {
+        params: {
+            path: '/room/' + today
+        }
+    })
+        .then(function (response) {
+            console.log("response", response.data);
+            if (!response.data.error) {
+                let message = "To Day: " + today + "\nRoom No: " + response.data.roomNo + "\nPIN Code: " + response.data.pin
+                sendMessage(sender, message)
+            } else {
+                let message = "To Day: " + today + "\nไม่พบข้อมูลของวันนี้"
+                sendMessage(sender, message)
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    res.sendStatus(200)
+})
+
+function sendMessage(sender, message) {
     let data = {
         to: sender,
         messages: [
             {
                 type: 'text',
-                text: 'สวัสดีค่ะ เราเป็นผู้ช่วยปรึกษาด้านความรัก สำหรับหมามิ้น 💞'
+                text: message
             }
         ]
     }
