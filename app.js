@@ -14,8 +14,9 @@ app.post('/webhook', (req, res) => {
     var sender = req.body.events[0].source.userId
     var room = req.body.events[0].source.roomId
     var replyToken = req.body.events[0].replyToken
-    console.log(text, sender, room, replyToken)
-    console.log(typeof sender, typeof text)
+    // console.log(text, sender, room, replyToken)
+    // console.log(typeof sender, typeof text)
+    console.log("req.body.events[0]", req.body.events[0])
     // console.log(req.body.events[0])
     if (text === 'สวัสดี' || text === 'Hello' || text === 'hello') {
         sendText(sender, text)
